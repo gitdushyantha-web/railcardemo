@@ -14,9 +14,10 @@ Q1: SELECT STATION_ID AS STATION, AVG(DEPARTURE_TIME - ARRIVAL_TIME) AS AVERAGE_
     FROM RAIL_MOVEMENTS
     GROUP BY STATION_ID;
 
-Q2: Create index on station_id -> STATION_ID_IDX
+Q2: Create index on station_id -> STATION_ID_IDX SORT BY ASCENDING
 
-Execution Plan
+Retrieve pages by index (STATION_ID_IDX).
+Index fit (STATION_ID_IDX) for memory size.
 
 a. Query retrieve records by STATION_ID_IDX by index
 b. For each record SUM(DEPARTURE_TIME - ARRIVAL_TIME)
@@ -24,4 +25,19 @@ c. For each record COUNT(DEPARTURE_TIME - ARRIVAL_TIME)
 d. For each record AVG = SUM(DEPARTURE_TIME - ARRIVAL_TIME) / COUNT(DEPARTURE_TIME - ARRIVAL_TIME)
 e. Final output
    station id and dwelling time
+
+Time -> O(n) -> 50 million
+
+Do not scan by composite key. Use STATION_ID_IDX index to retrieve records.
+
+Execution Plan
+
+For each station record in composite index(n) :
+  select station_id
+  For each station record in composite index(n) :
+     calculate average dwelling time for selected station_id
+
+Time -> O(n2) -> squared(50 million)
+
+
 
