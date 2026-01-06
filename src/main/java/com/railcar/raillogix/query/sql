@@ -1,0 +1,27 @@
+Assume a table named rail_movements with 50 million rows:
+
+●	movement_id (PK)
+●	rail_car_id (FK) 
+●	station_id (FK) 
+●	arrival_time (Timestamp) 
+●	departure_time (Timestamp, nullable)
+
+Query Solution
+
+Assumption : Table only contains records for last 30 days
+
+Q1: SELECT STATION_ID AS STATION, AVG(DEPARTURE_TIME - ARRIVAL_TIME) AS AVERAGE_DWELL_TIME
+    FROM RAIL_MOVEMENTS
+    GROUP BY STATION_ID;
+
+Q2: Create index on station_id -> STATION_ID_IDX
+
+Execution Plan
+
+a. Query retrieve records by STATION_ID_IDX by index
+b. For each record SUM(DEPARTURE_TIME - ARRIVAL_TIME)
+c. For each record COUNT(DEPARTURE_TIME - ARRIVAL_TIME)
+d. For each record AVG = SUM(DEPARTURE_TIME - ARRIVAL_TIME) / COUNT(DEPARTURE_TIME - ARRIVAL_TIME)
+e. Final output
+   station id and dwelling time
+
