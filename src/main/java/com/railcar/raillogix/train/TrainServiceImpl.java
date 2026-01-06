@@ -1,5 +1,8 @@
 package com.railcar.raillogix.train;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class TrainServiceImpl implements TrainService {
 
     private final NotificationService notificationService;
